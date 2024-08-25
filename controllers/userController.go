@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 
-	"example.com/authentication/dto"
 	"example.com/authentication/initializers"
 	"example.com/authentication/models"
 	"github.com/gin-gonic/gin"
@@ -13,9 +12,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+type UserInput struct {
+	Name     string
+	Username string
+	Password string
+}
+
+
 func Register(c *gin.Context) {
 	// Get data from req body
-	var userData dto.UserDTO
+	var userData UserInput
 	if err := c.BindJSON(&userData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Failed to Bind Data",
@@ -83,13 +89,6 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-
-	// if user.ID == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{
-	// 		"error": "User Not Found",
-	// 	})
-	// 	return
-	// }
 
 	// Compare password
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(reqBody.Password))

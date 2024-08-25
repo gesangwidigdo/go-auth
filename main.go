@@ -1,9 +1,8 @@
 package main
 
 import (
-	"example.com/authentication/controllers"
 	"example.com/authentication/initializers"
-	"example.com/authentication/middlewares"
+	"example.com/authentication/routes"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,8 +18,8 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.POST("/register", controllers.Register)
-	r.POST("/login", controllers.Login)
-	r.GET("/profile", middlewares.RequireAuth, controllers.GetUserProfile)
+
+	routes.Routes(r)
+
 	r.Run()
 }
